@@ -1,7 +1,9 @@
-package com.jason.mvnbook.helloworld;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
+import com.jason.mvnbook.helloworld.HelloWorld;
 
 public class HelloWorldTest{
 		
