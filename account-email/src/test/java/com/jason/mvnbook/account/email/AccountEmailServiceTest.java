@@ -14,40 +14,43 @@ import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetup;
 
-public class AccountEmailServiceTest {
 
-	private GreenMail greenMail;
-	
-	@Before
-	public  void startMailServer() throws Exception {
-		greenMail = new GreenMail(ServerSetup.SMTP);
-		greenMail.setUser("jiatuer@jason.com", "zjzhongs123");
-		greenMail.start();
-	}
+public class AccountEmailServiceTest
+{
+    private GreenMail greenMail;
 
-	@Test
-	public void testSendEmail() throws Exception{
-		
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("account-email.xml");
-		AccountEmailService accountEmailService = (AccountEmailService) ctx.getBean("accountEmailService");
-		
-		String subject = "Test Subject";
-		String htmlText = "<h3>Test</h3>";
-		accountEmailService.sendMail("jiatue1r@jason.com", subject, htmlText);
-		greenMail.waitForIncomingEmail(2000,1);
-		Message[] msgs = greenMail.getReceivedMessages();
-		assertEquals(1,msgs.length); 
-		assertEquals(subject,msgs[0].getSubject());
-		assertEquals(htmlText,GreenMailUtil.getBody(msgs[0]).trim());
-	}
+    @Before
+    public void startMailServer()
+        throws Exception
+    {
+        greenMail = new GreenMail( ServerSetup.SMTP );
+        greenMail.setUser( "test@juvenxu.com", "123456" );
+        greenMail.start();
+    }
 
-	
-	
-	
-	@After
-	public  void stopMailServer() throws Exception {
-		greenMail.stop();
-	}
+    @Test
+    public void testSendMail()
+        throws Exception
+    {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext( "account-email.xml" );
+        AccountEmailService accountEmailService = (AccountEmailService) ctx.getBean( "accountEmailService" );
 
+        String subject = "Test Subject";
+        String htmlText = "<h3>Test</h3>";
+        accountEmailService.sendMail( "test2@juvenxu.com", subject, htmlText );
 
+        greenMail.waitForIncomingEmail( 2000, 1 );
+
+        Message[] msgs = greenMail.getReceivedMessages();
+        assertEquals( 1, msgs.length );
+        assertEquals( subject, msgs[0].getSubject() );
+        assertEquals( htmlText, GreenMailUtil.getBody( msgs[0] ).trim() );
+    }
+
+    @After
+    public void stopMailServer()
+        throws Exception
+    {
+        greenMail.stop();
+    }
 }
